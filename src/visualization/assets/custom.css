@@ -1,0 +1,47 @@
+/* Custom CSS for Dropdown text visibility (compatible with CSS-in-JS hashes) */
+div[class*="dash-dropdown"] div[class*="-control"],
+div[class*="dash-dropdown"] div[class*="-menu"],
+div[class*="dash-dropdown"] div[class*="-option"],
+div[class*="dash-dropdown"] div[class*="singleValue"],
+div[class*="dash-dropdown"] div[class*="placeholder"],
+div[class*="dash-dropdown"] div[class*="ValueContainer"],
+div[class*="dash-dropdown"] div[class*="Input"] input,
+div[class*="dash-dropdown"] input {
+    color: #222 !important;
+    background-color: #fff !important;
+}
+
+div[class*="dash-dropdown"] div[class*="-option"]:hover,
+div[class*="dash-dropdown"] div[class*="-option"][class*="-isFocused"] {
+    background-color: #e6e6e6 !important;
+    color: #000 !important;
+}
+
+/* Slider tooltips */
+.rc-slider-tooltip-inner {
+    background-color: #333 !important;
+    color: #fff !important;
+    border-color: #333 !important;
+    font-weight: bold !important;
+}
+.rc-slider-tooltip-arrow,
+.rc-slider-tooltip-placement-bottom .rc-slider-tooltip-arrow {
+    border-bottom-color: #333 !important;
+    border-top-color: #333 !important;
+}
+.rc-slider-mark-text {
+    color: #aaa !important;
+}
+
+/* DataTable filter input styling */
+.dash-spreadsheet-container .dash-spreadsheet-inner input {
+    color: #fff !important;
+    background-color: #333 !important;
+    border: 1px solid #555 !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+}
+.dash-spreadsheet-container .dash-spreadsheet-inner input::placeholder {
+    color: #aaa !important;
+    opacity: 1 !important;
+}

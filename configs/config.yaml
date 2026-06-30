@@ -1,0 +1,122 @@
+# ============================================================
+#  Exoplanet Detection Pipeline — Central Configuration
+# ============================================================
+
+# ----- Data Acquisition -----
+acquisition:
+  sector: 1                      # TESS sector to download
+  cadence: "short"               # "short" (2-min) | "fast" (20-sec)
+  author: "SPOC"                 # Pipeline author filter
+  max_targets: 500               # Set to null for full sector (~20k)
+  download_tpf: true             # Also download target pixel files
+  gaia_search_radius_arcsec: 21  # Cone search radius for Gaia cross-match
+
+# ----- Paths -----
+paths:
+  data_root: "data"
+  raw_lc: "data/raw/lightcurves"
+  raw_tpf: "data/raw/tpf"
+  raw_labels: "data/raw/labels"
+  interim: "data/interim"
+  processed: "data/processed"
+  checkpoints: "checkpoints"
+  outputs: "outputs"
+  reports: "reports"
+
+# ----- Quality Control -----
+quality_control:
+  max_nan_fraction: 0.20         # Flag if >20% cadences are NaN
+  min_duration_days: 10.0        # Flag if light curve shorter than this
+  max_crowding_metric: 0.5       # Flag if crowding > 0.5
+  min_std_flux: 1e-5             # Flag suspiciously flat light curves
+
+# ----- Signal Conditioning -----
+conditioning:
+  wavelet_family: "db8"          # PyWavelets wavelet family
+  wavelet_levels: 4              # Decomposition levels
+  gp_kernel: "sho"              # "sho" | "matern32"
+  bls_period_min: 0.5            # BLS minimum period (days)
+  bls_period_max: 15.0           # BLS maximum period (days)
+  bls_nperiods: 10000            # BLS period grid size
+  phase_nbins_global: 200        # Phase bins for global view
+  phase_nbins_local: 50          # Phase bins for local view (3x transit)
+  river_plot_ncycles: 20         # Max transit cycles for river plot
+
+# ----- Feature Engineering -----
+features:
+  scaler: "robust"               # "robust" | "standard" | "minmax"
+
+# ----- Data Split -----
+split:
+  train_fraction: 0.70
+  val_fraction: 0.15
+  test_fraction: 0.15
+  random_seed: 42
+  stratify: true
+
+# ----- Classification Model -----
+model:
+  # Transformer branch
+  transformer_d_model: 128
+  transformer_nhead: 8
+  transformer_num_layers: 4
+  transformer_dim_feedforward: 512
+  transformer_dropout: 0.1
+  # CNN branch
+  cnn_channels: [1, 16, 32, 64, 128]
+  cnn_kernel_size: 3
+  # Fusion
+  fusion_hidden_dim: 256
+  num_classes: 4                 # PLANET | ECLIPSING_BINARY | BLEND | NOISE
+  class_names: ["PLANET", "ECLIPSING_BINARY", "BLEND", "NOISE"]
+
+# ----- Training -----
+training:
+  epochs: 50
+  batch_size: 32
+  learning_rate: 3e-4
+  weight_decay: 1e-4
+  early_stopping_patience: 10
+  use_class_weights: true
+  use_smote: false               # Requires imbalanced-learn
+  num_workers: 4
+  device: "auto"                 # "auto" | "cpu" | "cuda"
+
+# ----- Parameter Estimation (MCMC) -----
+mcmc:
+  nwalkers: 64
+  nsteps: 2000
+  nburn: 500
+  thin: 10
+  # Priors (uniform unless otherwise noted)
+  period_min_days: 0.5
+  period_max_days: 15.0
+  rp_rs_min: 0.01
+  rp_rs_max: 0.30
+  impact_min: 0.0
+  impact_max: 1.0
+
+# ----- Confidence Scoring -----
+scoring:
+  snr_threshold: 7.0             # Minimum SNR to consider a detection
+  fap_threshold: 1e-3            # Maximum false-alarm probability
+  confidence_weights:
+    softmax_planet_prob: 0.5
+    snr_score: 0.3
+    fap_score: 0.2
+
+# ----- Visualization / Dashboard -----
+visualization:
+  host: "127.0.0.1"
+  port: 8050
+  debug: false
+  theme: "darkly"                # Bootstrap theme
+
+# ----- Logging -----
+logging:
+  level: "INFO"                  # DEBUG | INFO | WARNING | ERROR
+  log_file: "outputs/pipeline.log"
+  json_format: true
+
+# ----- Reproducibility -----
+random_seed: 42
