@@ -34,6 +34,7 @@ app = dash.Dash(
     external_stylesheets=[dbc.themes.DARKLY],
     suppress_callback_exceptions=True
 )
+server = app.server
 app.title = "Exoplanet Detection Dashboard"
 
 # Load default empty state data or read pipeline_results if available
