@@ -2,6 +2,8 @@
 
 An end-to-end AI-driven pipeline that downloads, preprocesses, and classifies TESS high-cadence astronomical light curves to detect planetary transits, and extracts candidate physical parameters (orbital period, transit depth, and transit duration) using Markov Chain Monte Carlo (MCMC).
 
+🔗 **Live Dashboard**: [https://ai-enabled-detection-of-exoplanets-from.onrender.com/](https://ai-enabled-detection-of-exoplanets-from.onrender.com/)
+
 ## 1. Overview
 Exoplanet detection through transit photometry requires identifying extremely small brightness variations in stars (often tens of parts-per-million). In crowded fields, stellar blending, instrumental noise, and intrinsic stellar variability obscure transit signals.
 
